@@ -6,10 +6,20 @@ const Merk= mongoose.model("Fles",new mongoose.Schema({
         required:true,
         minlength:3
     },
-    beschrijving:{
+    Beschrijving:{
         type:String,
         required:false
     }
 
 
 }));
+
+function validateMerk(merk){
+    const schema={
+        name:Joi.string().required(),
+        Beschrijving:Joi.string()
+    }
+    return Joi.validate(merk,schema);
+}
+exports.Merk=Merk;
+exports.validate=validateMerk;
