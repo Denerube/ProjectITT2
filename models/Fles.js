@@ -37,6 +37,6 @@ function validateFles(fles){
     }
     return Joi.validate(fles,schema);
 }
-exports.Merk=Merk;
+exports.Fles=Fles;
 exports.validate=validateFles;
 

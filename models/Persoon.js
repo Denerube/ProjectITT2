@@ -2,7 +2,7 @@
 const Joi=require("joi");
 const mongoose=require("mongoose");
 const flessenSchema= require("./Fles");
-const Merk= mongoose.model("Fles",new mongoose.Schema({
+const Persoon= mongoose.model("Fles",new mongoose.Schema({
     Naam:{
         type:String,
         required:true,
@@ -29,3 +29,5 @@ function validatePersoon (persoon){
     return Joi.validate(persoon,schema);
 }
 
+exports.Persoon=Persoon;
+exports.validate=validatePersoon;

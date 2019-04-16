@@ -55,5 +55,11 @@ router.delete(":/id",async (req,res)=>{
     if (!persoon) return res.status(404).send("nie gevonden");
     res.send(persoon);
 });
+//get by ID
+router.get(":/id",async (req,res)=>{
+    const persoon= await Persoon.findById(req.params.id);
+    if (!persoon) return res.status(404).send("nie gevonden");
+    res.send(persoon);
+});
 
 module.exports= router;
