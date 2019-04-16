@@ -1,3 +1,4 @@
+/*jshint esversion: 8 */
 const winston = require('winston');
 // require('winston-mongodb');
 require('express-async-errors');

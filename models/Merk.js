@@ -1,3 +1,4 @@
+/*jshint esversion: 8 */
 const Joi=require("joi");
 const mongoose=require("mongoose");
 const Merk= mongoose.model("Fles",new mongoose.Schema({
@@ -16,7 +17,7 @@ const Merk= mongoose.model("Fles",new mongoose.Schema({
 
 function validateMerk(merk){
     const schema={
-        name:Joi.string().required(),
+        Naam:Joi.string().required(),
         Beschrijving:Joi.string()
     }
     return Joi.validate(merk,schema);

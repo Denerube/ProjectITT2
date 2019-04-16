@@ -1,3 +1,4 @@
+/*jshint esversion: 8 */
 const Joi=require("joi");
 const mongoose=require("mongoose");
 const {PersoonSchema}= require("./Persoon");

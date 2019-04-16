@@ -1,3 +1,4 @@
+/*jshint esversion: 8 */
 const winston = require('winston');
 const express = require('express');
 const app = express();
