@@ -1,20 +1,25 @@
 /*jshint esversion: 6 */
 const validateObjectId = require('../middleware/validateObjectId');
-const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
+
+
 const {Persoon, validate} = require('../models/Persoon');
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../middleware/auth');
+const Admin = require('../middleware/roles/admin');
+const Read = require('../middleware/roles/read');
+const Update = require('../middleware/roles/update');
+const Write = require('../middleware/roles/write');
+const Delete = require('../middleware/roles/delete');
 //get all
-router.get("/",async(req,res)=>{
+router.get("/",[auth,Read],async(req,res)=>{
    const personen=await Persoon.find();
    res.send(personen);
 });
 
 //post new persoon
-router.post("/",async(req,res)=>{
+router.post("/",[auth,Write],async(req,res)=>{
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     let persoon;
@@ -35,7 +40,7 @@ router.post("/",async(req,res)=>{
 });
 
 //edit persoon
-router.post("/",async(req,res)=>{
+router.post("/",[auth,Update],async(req,res)=>{
     //voor het moment geef je een volledige persoon mee (+ flessen) tot beter oplossing gevonden is
     const {error} = validate(req.body);
     //const flessen = await Flessen.findById(req.body.flessen.id);
@@ -50,13 +55,13 @@ router.post("/",async(req,res)=>{
 });
 //delete persoon
 //alle flessen worden ook verwijderd,personen worden enkel verwijderd bepaalde gevallen
-router.delete(":/id",async (req,res)=>{
+router.delete(":/id",[auth,Admin],async (req,res)=>{
     const persoon=await  Persoon.findByIdAndRemove(req.params.id);
     if (!persoon) return res.status(404).send("nie gevonden");
     res.send(persoon);
 });
 //get by ID
-router.get(":/id",async (req,res)=>{
+router.get(":/id",[auth,Read],async (req,res)=>{
     const persoon= await Persoon.findById(req.params.id);
     if (!persoon) return res.status(404).send("nie gevonden");
     res.send(persoon);

@@ -1,21 +1,26 @@
 /*jshint esversion: 8 */
 const validateObjectId = require('../middleware/validateObjectId');
 const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
+const admin = require('../middleware/roles/admin');
 const {Merk, validate} = require("../models/Merk");
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../middleware/auth');
+const Admin = require('../middleware/roles/admin');
+const Read = require('../middleware/roles/read');
+const Update = require('../middleware/roles/update');
+const Write = require('../middleware/roles/write');
+const Delete = require('../middleware/roles/delete');
 
 //get all
-router.get("/",async(req,res) =>{
+router.get("/",[auth,Read],async(req,res) =>{
     const merken=await Merk.find();
     res.send(merken);
 });
 
 //post a new merk
-router.post("/",auth,(req,res)=>{
+router.post("/",[auth,Write],(req,res)=>{
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     let merk = new Merk({
@@ -28,7 +33,7 @@ router.post("/",auth,(req,res)=>{
 });
 
 //update
-router.put("/:id",async(req,res)=>{
+router.put("/:id",[auth,Update],async(req,res)=>{
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -39,14 +44,14 @@ router.put("/:id",async(req,res)=>{
 
 });
 //delete
-router.delete("/:id",async(req,res)=>{
+router.delete("/:id",[auth,Delete],async(req,res)=>{
 const merk= await Merk.findbyId(req.params.id);
 if (!merk) return res.status(404).send('The genre with the given ID was not found.');
 res.send(merk);
 
 });
 
-router.get(':/id',async(req,res)=>{
+router.get(':/id',[auth,Read],async(req,res)=>{
 const merk= await Merk.findbyId(req.params.id);
 if (!merk) return res.status(404).send('The genre with the given ID was not found.');
 res.send(merk);

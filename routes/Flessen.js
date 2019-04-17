@@ -7,9 +7,15 @@ import {Fles, validate} from "../models/Fles";
 
 import validateObjectId from "../middleware/validateObjectId";
 
-import auth from "../middleware/auth";
 
-import admin from "../middleware/admin";
+
+const auth = require('../middleware/auth');
+const Admin = require('../middleware/roles/admin');
+const Read = require('../middleware/roles/read');
+const Update = require('../middleware/roles/update');
+const Write = require('../middleware/roles/write');
+const Delete = require('../middleware/roles/delete');
+
 
 
 
@@ -21,13 +27,13 @@ const router = express.Router();
 
 
 //get all
-router.get("/",async (req,res)=>{
+router.get("/",[auth,Read],async (req,res)=>{
 const flessen= await Fles.find();
 res.send(flessen);
 });
 
 
-router.post("/",async (req,res)=>{
+router.post("/",[auth,Write],async (req,res)=>{
     const {error}=validate(req.body);
     if (error) return res.status(400).send((error.detail[0].message));
     const persoon=await Persoon.findById(req.body.PersoonId);
@@ -50,7 +56,7 @@ router.post("/",async (req,res)=>{
     fles=await fles.save();
     res.send(fles);
 });
-router.put("/:id",async (req,res)=>{
+router.put("/:id",[auth,Update],async (req,res)=>{
     const {error}=validate(req.body);
     if (error) return res.status(400).send((error.detail[0].message));
 
@@ -78,13 +84,13 @@ router.put("/:id",async (req,res)=>{
     res.send(fles);
 });
 
-router.delete(":/id",async (req,res)=>{
+router.delete(":/id",[auth,Delete],async (req,res)=>{
     const fles= await Fles.findByIdAndRemove(req.params.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);
 });
 
-router.get("/:id",async (req,res)=>{
+router.get("/:id",[auth,Read],async (req,res)=>{
    const Fles= await Fles.findById(req.params.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);
