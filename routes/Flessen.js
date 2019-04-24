@@ -91,7 +91,7 @@ router.delete(":/id",[auth,Delete],async (req,res)=>{
 });
 
 router.get("/:id",[auth,Read],async (req,res)=>{
-   const Fles= await Fles.findById(req.params.id);
+   const fles= await Fles.findById(req.params.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);
 });
