@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const validateObjectId = require('../middleware/validateObjectId');
+//const validateObjectId = require('../middleware/validateObjectId');
 
 
 const {Persoon, validate} = require('../models/Persoon');

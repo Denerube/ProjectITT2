@@ -1,10 +1,10 @@
 /*jshint esversion: 8 */
 const Joi=require("joi");
 const mongoose=require("mongoose");
-const Merk= mongoose.model("Fles",new mongoose.Schema({
+const MerkSchema= new mongoose.Schema({
     Naam:{
         type:String,
-        required:true,
+        required:[true,"name is required"],
         minlength:3
     },
     Beschrijving:{
@@ -13,7 +13,9 @@ const Merk= mongoose.model("Fles",new mongoose.Schema({
     }
 
 
-}));
+});
+
+const Merk= mongoose.model("Fles",MerkSchema);
 
 function validateMerk(merk){
     const schema={
@@ -23,4 +25,5 @@ function validateMerk(merk){
     return Joi.validate(merk,schema);
 }
 exports.Merk=Merk;
+exports.MerkSchema=MerkSchema;
 exports.validate=validateMerk;

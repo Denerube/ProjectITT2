@@ -1,8 +1,8 @@
 /*jshint esversion: 8 */
 const Joi=require("joi");
 const mongoose=require("mongoose");
-const flessenSchema= require("./Fles");
-const Persoon= mongoose.model("Fles",new mongoose.Schema({
+const {FlesSchema} = require("./Fles");
+const PersoonSchema= new mongoose.Schema({
     Naam:{
         type:String,
         required:true,
@@ -13,12 +13,11 @@ const Persoon= mongoose.model("Fles",new mongoose.Schema({
         required:false
     },
     Flessen:{
-        type:[flessenSchema],
+        type:[FlesSchema],
 
     }
-
-
-}));
+});
+const Persoon= mongoose.model("Persoon",PersoonSchema);
 
 function validatePersoon (persoon){
     const schema={
@@ -31,3 +30,4 @@ function validatePersoon (persoon){
 
 exports.Persoon=Persoon;
 exports.validate=validatePersoon;
+exports.PersoonSchema=PersoonSchema;

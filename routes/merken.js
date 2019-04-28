@@ -1,12 +1,11 @@
 /*jshint esversion: 8 */
-const validateObjectId = require('../middleware/validateObjectId');
+//const validateObjectId = require('../middleware/validateObjectId');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/roles/admin');
 const {Merk, validate} = require("../models/Merk");
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
 const Admin = require('../middleware/roles/admin');
 const Read = require('../middleware/roles/read');
 const Update = require('../middleware/roles/update');

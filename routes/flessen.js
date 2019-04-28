@@ -1,12 +1,9 @@
 /*jshint esversion: 8 */
-import {Merk} from "../models/Merk";
+const Merk =require("../models/Merk");
+const Persoon = require("../models/Persoon");
+const {Fles,validate}=require("../models/Fles");
 
-import {Persoon} from "../models/Persoon";
-
-import {Fles, validate} from "../models/Fles";
-
-import validateObjectId from "../middleware/validateObjectId";
-
+//const validateObjectId = require("../middleware/valideteObjectId");
 
 
 const auth = require('../middleware/auth');
@@ -15,16 +12,8 @@ const Read = require('../middleware/roles/read');
 const Update = require('../middleware/roles/update');
 const Write = require('../middleware/roles/write');
 const Delete = require('../middleware/roles/delete');
-
-
-
-
-import express from "express";
-
-
+const express= require("express");
 const router = express.Router();
-
-
 
 //get all
 router.get("/",[auth,Read],async (req,res)=>{

@@ -2,14 +2,11 @@
 const Joi=require("joi");
 const mongoose=require("mongoose");
 const {MerkSchema}= require("./Merk");
-const {PersoonSchema}=require("./Persoon");
 
-const Fles= mongoose.model("Fles",new mongoose.Schema({
-
+const FlesSchema= new mongoose.Schema({
     Merk:{
         type:MerkSchema,
-        required:true,
-        minlength:3
+        required:true, 
     },
     Inhoud:{
         type:String,
@@ -21,22 +18,30 @@ const Fles= mongoose.model("Fles",new mongoose.Schema({
         required:false
     },
     Persoon:{
-        type:Schema.type.objectId,
+        type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"Persoon"
+    } 
+});
+
+//const Fles = mongoose.modelNames().indexOf('Fles') < -1 ? mongoose.model('Fles', FlesSchema) : mongoose.model('Fles')
+let Fles;
+try {
+    UserSchema = mongoose.model('Fles', FlesSchema);
+    } catch (e) {
+    UserSchema = mongoose.model('Fles');
     }
 
-
-}));
 function validateFles(fles){
     const schema={
         MerkId:Joi.objectId(),
         Inhoud:Joi.string().valid("1/4",'2/4','3/4','1/4',"LEEG"),
         Beschrijving:Joi.string(),
         PersoonId:Joi.objectId()
-    }
+    };
     return Joi.validate(fles,schema);
 }
 exports.Fles=Fles;
 exports.validate=validateFles;
+exports.FlesSchema=FlesSchema;
 
