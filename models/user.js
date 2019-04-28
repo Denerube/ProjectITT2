@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     Name: {
         type: String,
-        required: true,
+        required: [true,"name is required eh"],
         minlength: 5,
         maxlength: 50
     },
@@ -26,28 +26,28 @@ const userSchema = new mongoose.Schema({
     },
     Read:{
         type:Boolean,
-        required:true,
+        
         default:false
     },
     Write:{
         type:Boolean,
-        required:true,
+       
         default:false
     },
     Update:{
         type:Boolean,
-        required:true,
+        
         default:false
     },
     Delete:{
         type:Boolean,
-        required:true,
+      
         default:false
     },
 
     IsAdmin:{
         type:Boolean,
-        required:true,
+       
         default:false
     }
 });
@@ -61,9 +61,14 @@ const User = mongoose.model('User', userSchema);
 
 function validateUser(user) {
     const schema = {
-        name: Joi.string().min(5).max(50).required(),
-        email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(255).required()
+        Name: Joi.string().min(5).max(50).required(),
+        Email: Joi.string().min(5).max(255).required().email(),
+        Password: Joi.string().min(5).max(255).required(),
+        Read:Joi.boolean().optional(),
+        Write:Joi.boolean().optional(),
+        Update:Joi.boolean().optional(),
+        Delete:Joi.boolean().optional(),
+        IsAdmin:Joi.boolean().optional()
     };
 
     return Joi.validate(user, schema);
