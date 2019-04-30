@@ -8,12 +8,13 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     const { error } = validate(req.body);
+    console.log(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ Email: req.body.Email });
     if (!user) return res.status(400).send('Invalid email or password.');
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword = await bcrypt.compare(req.body.Password, user.Password);
     if (!validPassword) return res.status(400).send('Invalid email or password.');
 
     const token = user.generateAuthToken();
@@ -22,8 +23,8 @@ router.post('/', async (req, res) => {
 
 function validate(req) {
     const schema = {
-        email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(255).required()
+        Email: Joi.string().min(5).max(255).required().email(),
+        Password: Joi.string().min(5).max(255).required()
     };
 
     return Joi.validate(req, schema);

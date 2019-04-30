@@ -17,7 +17,13 @@ const router = express.Router();
 
 //get all
 router.get("/",[auth,Read],async (req,res)=>{
-const flessen= await Fles.find();
+
+let flessen;
+try{
+flessen=await Fles.find();
+}catch(error){
+    console.log(error);
+}
 res.send(flessen);
 });
 
@@ -81,6 +87,7 @@ router.delete(":/id",[auth,Delete],async (req,res)=>{
 
 router.get("/:id",[auth,Read],async (req,res)=>{
    const fles= await Fles.findById(req.params.id);
+   console.log(req.params.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);
 });

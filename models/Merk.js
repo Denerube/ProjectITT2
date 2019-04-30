@@ -1,6 +1,7 @@
 /*jshint esversion: 8 */
 const Joi=require("joi");
 const mongoose=require("mongoose");
+
 const MerkSchema= new mongoose.Schema({
     Naam:{
         type:String,
@@ -15,7 +16,7 @@ const MerkSchema= new mongoose.Schema({
 
 });
 
-const Merk= mongoose.model("Fles",MerkSchema);
+const Merk= mongoose.model("Merk",MerkSchema);
 
 function validateMerk(merk){
     const schema={

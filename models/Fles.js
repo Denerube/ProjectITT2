@@ -25,12 +25,7 @@ const FlesSchema= new mongoose.Schema({
 });
 
 //const Fles = mongoose.modelNames().indexOf('Fles') < -1 ? mongoose.model('Fles', FlesSchema) : mongoose.model('Fles')
-let Fles;
-try {
-    UserSchema = mongoose.model('Fles', FlesSchema);
-    } catch (e) {
-    UserSchema = mongoose.model('Fles');
-    }
+let Fles= mongoose.model('Fles', FlesSchema);
 
 function validateFles(fles){
     const schema={

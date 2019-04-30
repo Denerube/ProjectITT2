@@ -22,7 +22,7 @@ const Persoon= mongoose.model("Persoon",PersoonSchema);
 function validatePersoon (persoon){
     const schema={
         Naam:Joi.string().required(),
-        beschrijving:Joi.string(),
+        Beschrijving:Joi.string(),
         Flessen:Joi.array()
     }
     return Joi.validate(persoon,schema);
