@@ -12,6 +12,7 @@ const Read = require('../middleware/roles/read');
 const Update = require('../middleware/roles/update');
 const Write = require('../middleware/roles/write');
 const Delete = require('../middleware/roles/delete');
+const _ = require('lodash');
 //get all
 router.get("/",[auth,Read],async(req,res)=>{
    const personen=await Persoon.find();
@@ -35,34 +36,44 @@ router.post("/",[auth,Write],async(req,res)=>{
             Flessen:req.body.Flessen
         });
     }
+    await persoon.save();
     res.send(persoon);
 
 });
 
 //edit persoon
-router.post("/",[auth,Update],async(req,res)=>{
-    //voor het moment geef je een volledige persoon mee (+ flessen) tot beter oplossing gevonden is
+router.put("/:id",[auth,Update],async(req,res)=>{
+    console.log("put personen");
+    //voor het moment geef je een volledige persoon mee (+ flessen) 
     const {error} = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
     //const flessen = await Flessen.findById(req.body.flessen.id);
-    const persoon= await Persoon.findByIdAndUpdate(req.params.id,{
+    
+    let persoon;
+    try{
+    persoon= await Persoon.findByIdAndUpdate(req.params.id,{
         Naam:req.body.Naam,
         Beschrijving:req.body.Beschrijving,
         Flessen:req.body.Flessen
     },{new: true});
     if (!persoon) return res.status(404).send("nie gevonden");
+    }catch(err){
+        console.log(err);
+    }
+
     res.send(persoon);
 
 });
 //delete persoon
 //alle flessen worden ook verwijderd,personen worden enkel verwijderd bepaalde gevallen
-router.delete(":/id",[auth,Admin],async (req,res)=>{
-    const persoon=await  Persoon.findByIdAndRemove(req.params.id);
+router.delete("/",[auth,Admin],async (req,res)=>{
+    const persoon=await  Persoon.findByIdAndRemove(req.query.id);
     if (!persoon) return res.status(404).send("nie gevonden");
     res.send(persoon);
 });
 //get by ID
-router.get(":/id",[auth,Read],async (req,res)=>{
-    const persoon= await Persoon.findById(req.params.id);
+router.get("/getById",[auth,Read],async (req,res)=>{
+    const persoon= await Persoon.findById(req.query.id);
     if (!persoon) return res.status(404).send("nie gevonden");
     res.send(persoon);
 });

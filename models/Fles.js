@@ -3,10 +3,12 @@ const Joi=require("joi");
 const mongoose=require("mongoose");
 const {MerkSchema}= require("./Merk");
 
+
 const FlesSchema= new mongoose.Schema({
     Merk:{
         type:MerkSchema,
-        required:true, 
+        required:true,
+        ref:"Merk"
     },
     Inhoud:{
         type:String,
@@ -30,7 +32,7 @@ let Fles= mongoose.model('Fles', FlesSchema);
 function validateFles(fles){
     const schema={
         MerkId:Joi.objectId(),
-        Inhoud:Joi.string().valid("1/4",'2/4','3/4','1/4',"LEEG"),
+        Inhoud:Joi.string().valid("1/4",'2/4','3/4',"LEEG"),
         Beschrijving:Joi.string(),
         PersoonId:Joi.objectId()
     };

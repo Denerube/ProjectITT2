@@ -14,6 +14,7 @@ const PersoonSchema= new mongoose.Schema({
     },
     Flessen:{
         type:[FlesSchema],
+        required:false
 
     }
 });
@@ -24,7 +25,7 @@ function validatePersoon (persoon){
         Naam:Joi.string().required(),
         Beschrijving:Joi.string(),
         Flessen:Joi.array()
-    }
+    };
     return Joi.validate(persoon,schema);
 }
 

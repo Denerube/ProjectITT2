@@ -1,6 +1,6 @@
 /*jshint esversion: 8 */
-const Merk =require("../models/Merk");
-const Persoon = require("../models/Persoon");
+const {Merk} =require("../models/Merk");
+const {Persoon} = require("../models/Persoon");
 const {Fles,validate}=require("../models/Fles");
 
 //const validateObjectId = require("../middleware/valideteObjectId");
@@ -30,11 +30,27 @@ res.send(flessen);
 
 router.post("/",[auth,Write],async (req,res)=>{
     const {error}=validate(req.body);
-    if (error) return res.status(400).send((error.detail[0].message));
-    const persoon=await Persoon.findById(req.body.PersoonId);
-    const merk= await Merk.findById(req.body.MerkId);
-
-    let fles= new Fles({
+    if (error) return res.status(400).send("ver error"+error.detail[0].message);
+    console.log("post new fles");
+    
+    let persoon,merk;
+    try {
+         persoon = await Persoon.findById(req.body.PersoonId);
+         merk= await Merk.findById(req.body.MerkId);
+    } catch (err) {
+        console.log("lookup fout"+err);
+    }
+    
+    
+    let fles;
+    if (!persoon){
+        return res.status(400).send("persoon niet gevonden");
+    }else if(!merk){
+        return res.status(400).send("merk niet gevonden");
+    }
+    console.log(persoon);
+    console.log(merk);
+    fles= new Fles({
 
         Merk:{
             _id:merk.id,
@@ -47,8 +63,16 @@ router.post("/",[auth,Write],async (req,res)=>{
             _id:persoon.id,
             Naam:persoon.Naam,
         }
-    })
-    fles=await fles.save();
+    });
+    
+    try {
+        
+        fles=await fles.save();
+    } catch (err) {
+        console.log(err);
+    }
+   
+    
     res.send(fles);
 });
 router.put("/:id",[auth,Update],async (req,res)=>{
@@ -79,14 +103,14 @@ router.put("/:id",[auth,Update],async (req,res)=>{
     res.send(fles);
 });
 
-router.delete(":/id",[auth,Delete],async (req,res)=>{
-    const fles= await Fles.findByIdAndRemove(req.params.id);
+router.delete("/",[auth,Delete],async (req,res)=>{
+    const fles= await Fles.findByIdAndRemove(req.query.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);
 });
 
-router.get("/:id",[auth,Read],async (req,res)=>{
-   const fles= await Fles.findById(req.params.id);
+router.get("/getById",[auth,Read],async (req,res)=>{
+   const fles= await Fles.findById(req.query.id);
    console.log(req.params.id);
     if (!fles) return res.send.status(404).send("niet gevonden");
     res.send(fles);

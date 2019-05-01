@@ -1,5 +1,5 @@
 /*jshint esversion: 8 */
-const validateObjectId = require('../middleware/valideteObjectId');
+
 const auth = require('../middleware/auth');
 const admin = require('../middleware/roles/admin');
 const {Merk, validate} = require("../models/Merk");
